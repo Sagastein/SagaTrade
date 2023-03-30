@@ -7,4 +7,4 @@ static/*.css
 static/admin/*.js.map
 app/*.js
 app/
-*jpg
+media/images/*jpg
