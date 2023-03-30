@@ -6,4 +6,5 @@
 /static/*.css
 /static/admin/*.js.map
 /app/*.js
-/app/*
+/app/
+/static/
