@@ -1,0 +1,74 @@
+{% extends 'index.html' %} {% block title %} {{item.name}} {% endblock title %}
+{% block content %}
+<h1 class="text-3xl text-center">Details</h1>
+<section class="grid space-y-4 md:grid-cols-5 my-6">
+  <div class="md:col-span-3 mx-auto w-10/12">
+    <img
+      class="h-96 w-full rounded-md"
+      src="{{item.image.url}}"
+      alt="{{item.name}}"
+    />
+  </div>
+  <div class="md:col-span-2 mx-auto w-10/12  space-y-3 p-6 bg-gray-100 rounded-xl">
+    <h1 class="mb-6 capitalize font-semibold text-3xl">{{item.name}}</h1>
+    <p class="text-gray-500 capitalize">
+      <strong>price: </strong> {{item.price}} $
+    </p>
+    <p class="text-gray-500 capitalize">
+      <strong>Seller: </strong> {{item.createdBy}}
+    </p>
+    {% if item.description %}
+    <div>
+      <h1 class="capitalize text-gray-600 font-bold">Description :</h1>
+      <i class="capitalize text-xs">{{item.description}}</i>
+    </div>
+    {% endif %}
+     {% if request.user == item.createdBy %}
+     <div class="mt-6 p-6 bg-white rounded-xl">
+      <p>This is your item</p>
+            <a href="{% url 'home:edit' item.id %}" class="px-4 py-2 tracking-wide rounded-xl hover:scale-105 text-white mt-6 inline-block capitalize bg-teal-500 border">Edit</a>
+
+      <a href="{% url 'home:delete' item.id %}" class="px-4 py-2 rounded-xl hover:scale-105 text-white mt-6 inline-block capitalize bg-red-500 border">Delete</a>
+     </div>
+     {% else %}
+     <a href="{% url 'message:conv' item.id %}">
+      <button
+        class="border py-2 px-4 rounded-md bg-teal-700 text-white font-medium hover:scale-105"
+      >
+        Contact Owner
+      </button>
+    </a>
+     {% endif %}
+    
+  </div>
+</section>
+
+<div class="mt-6 w-10/12 mx-auto px-6 bg-gray-100 rounded-xl">
+  <h1 class="text-center text-3xl py-6 font-semibold">Retated items Items</h1>
+  <div class="grid grid-cols-3 gap-12">
+    {% for item in related_item %}
+    <div class="rounded-t-xl my-12 bg-white">
+      <a href="{% url 'home:details' item.id %}" class="b">
+        <img
+          src="{{item.image.url}}"
+          alt="image"
+          class="rounded-t-xl h-52 w-full"
+        />
+        <div class="grid justify-center py-2 px-4">
+          <h1 class="capitalize font-bold text-2xl text-center">
+            {{item.name}}
+          </h1>
+          <p class="text-gray-400">
+            <span class="capitalize">price:</span>
+            <span class="">{{item.price}} $</span>
+          </p>
+        </div>
+      </a>
+    </div>
+    {%empty%}
+    <p class="text-center text-3xl text-red-300 w-full">No related data !!</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

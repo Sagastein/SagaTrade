@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+
+<div class="mt-6 w-10/12 mx-auto px-6 bg-gray-100 rounded-xl">
+  <figure><embed src="https://wakatime.com/share/@sagacode/dce74ea3-3586-427c-80ac-ed8c657f5607.svg"></embed></figure>
+  <h1 class="text-center text-3xl py-6 font-semibold">My Items</h1>
+  <div class="grid grid-cols-3 gap-12">
+    {% for item in items %}
+    <div class="rounded-t-xl bg-white">
+      <a href="{% url 'home:details' item.id %}" class="b">
+        <img
+          src="{{item.image.url}}"
+          alt="image"
+          class="rounded-t-xl h-52 w-full"
+        />
+        <div class="grid justify-center py-2 px-4">
+          <h1 class="capitalize font-bold text-2xl text-center">
+            {{item.name}}
+          </h1>
+          <p class="text-gray-400">
+            <span class="capitalize">price:</span>
+            <span class="">{{item.price}} $</span>
+          </p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+ 
+{% endblock content %}
+

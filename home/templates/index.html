@@ -1,0 +1,74 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock title %} | SagaTrade</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    {% tailwind_css %} {% comment %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% endcomment %}
+  </head>
+
+  <body class="bg-gray-50 font-serif leading-normal tracking-normal">
+    <nav class="border-b flex py-6 px-4 items-center justify-between">
+      <a class="text-4xl" href=".">Saga Trade</a>
+      <div>
+        <ul class=" capitalize space-x-4 flex">
+          <li
+            class="capitalize p-2 rounded-md px-4 text-lg mx-4 cursor-pointer hover:scale-105"
+          >
+            <a href="{% url 'home:new' %}"> New Item</a>
+          </li>
+          <li
+            class="capitalize p-2 rounded-md px-4 text-lg mx-4 cursor-pointer hover:scale-105"
+          >
+            <a href="{% url 'home:browse' %}">Browse</a>
+          </li>
+
+          {% if request.user.is_authenticated %} 
+           <li class="capitalize p-2 rounded-md px-4 bg-green-500 text-lg mx-4 cursor-pointer hover:scale-105">
+            <a href="{% url 'message:inbox' %}">inbox</a>
+          </li>
+          <li class="capitalize p-2 rounded-md px-4 bg-teal-400 text-lg mx-4 cursor-pointer hover:scale-105">
+        <a href="{% url 'home:dashboard' %}"> dashboard</a>
+          </li>
+          {% else %}
+          <li
+            class="capitalize p-2 rounded-md px-4 bg-green-500 text-xl mx-4 cursor-pointer hover:scale-105"
+          >
+            <a href="{% url 'home:signup' %}"> sign Up</a>
+          </li>
+          <li
+            class="capitalize p-2 rounded-md px-4 bg-teal-400 text-2xl mx-4 cursor-pointer hover:scale-105"
+          >
+            <a href="{% url 'home:login' %}"> Login</a>
+          </li>
+          {% endif %} 
+        </ul>
+      </div>
+    </nav>
+    {% block content %}{% endblock content %}
+    <footer class="flex mt-4 bottom-0 bg-gray-200">
+      <div class="basis-8/12 border">
+        <h2 class="my-4 text-3xl capitalize text-slate-800">about</h2>
+        <p class="text-gray-600 px-4">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+          assumenda ex asperiores quae rem vitae excepturi quam, temporibus
+          distinctio delectus veniam nostrum, animi impedit maxime sunt
+          cupiditate saepe architecto quisquam!
+        </p>
+      </div>
+      <div class="basis-3/12">
+        <h2 class="capitalize text-3xl underline">menus</h2>
+        <ul class="capitalize space-y-3">
+          <li>home</li>
+          <li>about</li>
+          <li>terms and policy</li>
+          <li>Agreement</li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+{% block title %}
+Conversation
+{% endblock title %}
+{% block content %}
+<h1 class="m-4">Inbox</h1>
+<div  class="space-y-6 w-11/12 mx-auto border rounded-xl grid">
+
+{% for message in conversation.messages.all %}
+<div class="p-6  md:w-1/2  border {% if message.createdBy == request.user %} md:justify-self-end bg-blue-200 {% endif %} bg-gray-100 rounded-xl">
+<div>
+    <p class="mb-4 capitalize">
+        <strong>{{message.createdBy }} @  </strong>
+    {{message.created_at | timesince}} ago
+ </p> 
+ <p class="capitalize">{{message.content}}</p>  
+</div>      
+</div>
+
+
+{%empty%}
+No Conversation
+{% endfor %} 
+</div>
+
+<form class="w-11/12 my-6 mx-auto" action="." method="post">
+    {% csrf_token %}
+    {{form}}
+     <button
+      class="py-2 capitalize px-6 mx-auto rounded-xl bg-slate-700 hover:bg-slate-900 text-white"
+      type="submit"
+    >
+      Send 
+    </button>
+</form>
+
+{% endblock content %}
+
+
+
+

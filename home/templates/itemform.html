@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block title %}{{title}}{% endblock title %}
+{% block content %}
+<h1 class="mb-6 text-center text-3xl">{{title}}</h1>
+<form class="w-1/2 border py-6 mx-auto" action="." method="POST" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <div class="space-y-6 px-6">
+        {{form.as_p}}
+    </div>
+     {% if form.errors or form.non_field_errors %}
+    <div class="bg-red-100 mb-3 p-6">
+      {% for field in form %} {{field.errors}} {%endfor %}
+      {{form.non_field_errors}}
+    </div>
+    {% endif %}
+      <div class="grid justify-center">
+      <button
+      class="py-2 capitalize px-6 mx-auto rounded-xl bg-slate-800 text-white"
+      type="submit"
+    >
+      submit 
+    </button>
+    </div>
+</form>
+{% endblock content %}
