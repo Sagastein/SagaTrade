@@ -2,7 +2,7 @@
 {%block content %}
 <div class="mt-6 mx-auto w-1/2 px-6 pb-3 bg-gray-200 rounded-xl">
   <h1 class="text-center text-3xl py-6 font-semibold">Sign Up</h1>
-  <form action="{% url 'home:signup' %}" method="POST">
+  <form action="{% url 'home:signup' %}" method="post">
     {% csrf_token %}
     <div class="mb-3">
       <label class="block capitalize mb-2">username</label>

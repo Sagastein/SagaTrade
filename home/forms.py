@@ -68,11 +68,6 @@ class SignUpForm(UserCreationForm):
         'placeholder': 'Enter your username',
         'class': 'w-full rounded-xl',
     }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Enter your password',
-        'class': 'w-full rounded-xl',
-    }))
-
     email = forms.CharField(widget=forms.EmailInput(attrs={
         'placeholder': 'Enter your e mail address',
         'class': 'w-full rounded-xl',

@@ -1,9 +1,12 @@
 
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from .models import Category, Item
-from .forms import SignUpForm, NewItemForm,EditItemForm
+from django.contrib.auth import logout
+from django.contrib import messages
+from .models import Category, Item, User
+from .forms import SignUpForm, NewItemForm, EditItemForm
 # Create your views here.
 
 
@@ -17,8 +20,8 @@ def index(request):
 
 
 def browse(request):
-    query = request.GET.get('query','')
-    category_id = request.GET.get('category',0)
+    query = request.GET.get('query', '')
+    category_id = request.GET.get('category', 0)
     items = Item.objects.filter(is_solid=False)
     categories = Category.objects.all()
 
@@ -27,8 +30,7 @@ def browse(request):
     if query:
         items = items.filter(Q(name__contains=query) |
                              Q(description__contains=query))
-    
-    
+
     return render(request, 'browse.html', {
         'items': items,
         'query': query,
@@ -36,8 +38,11 @@ def browse(request):
         'category_id': int(category_id)
     })
 
+
 def details(request, pk):
     item = get_object_or_404(Item, pk=pk)
+    if item is None:
+        return messages.error(request, 'No such item')
     related_item = Item.objects.filter(
         category=item.category, is_solid=False).exclude(pk=pk)[0:3]
     print(item)
@@ -48,13 +53,18 @@ def details(request, pk):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        
+
         if form.is_valid():
-            form.save()
-            return redirect('/login/')
+            # email = form.cleaned_data.get('email')
+            email = request.POST['email']
+            print(email)
+            if User.objects.filter(email=email).exists():
+                form.add_error('email', 'This email is already in use.')
+            else:
+                form.save()
+                return redirect('/login/')
     else:
         form = SignUpForm()
-
     return render(request, 'signup.html', {
         "form": form,
     })
@@ -78,14 +88,16 @@ def new(request):
         'title': "New Item",
     },)
 
+
 @login_required
-def edit(request,pk):
+def edit(request, pk):
     item = get_object_or_404(Item, pk=pk, createdBy=request.user)
     if request.method == 'POST':
-        form = EditItemForm(request.POST, request.FILES,instance=item)
+        form = EditItemForm(request.POST, request.FILES, instance=item)
 
         if form.is_valid():
             form.save()
+            messages.info(request, 'data updated successfully.')
             return redirect('home:details', pk=item.id)
     else:
         form = EditItemForm(instance=item)
@@ -94,6 +106,8 @@ def edit(request,pk):
         'form': form,
         'title': "Edit Item",
     },)
+
+
 @login_required()
 def contact(request):
     return render(request, 'contact.html')
@@ -105,8 +119,17 @@ def dashboard(request):
     return render(request, 'dashboard.html', {
                   "items": items
                   })
+
+
 @login_required
-def delete(request,pk):
-    item=get_object_or_404(Item,pk=pk,createdBy=request.user)
+def delete(request, pk):
+    item = get_object_or_404(Item, pk=pk, createdBy=request.user)
     item.delete()
+    messages.error(request, 'data deleted.')
     return redirect('home:dashboard')
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'you have logged out')
+    return redirect('home:index')

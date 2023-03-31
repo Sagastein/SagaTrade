@@ -138,3 +138,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TAILWIND_APP_NAME = 'app'
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
+
+SESSION_COOKIE_AGE = 1800
+

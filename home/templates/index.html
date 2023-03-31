@@ -12,6 +12,39 @@
   </head>
 
   <body class="bg-gray-50 font-serif leading-normal tracking-normal">
+{% comment %} {% if messages %}
+    <div class="absolute z-50 bottom-2 right-2">
+        <div class="bg-green-500 transition-all duration-300 delay-200 rounded-md text-white font-bold rounded-t px-4 py-2">
+            {% for message in messages %}
+               <p class="capitalize float-right px-4"> {{ message }} </p>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %} {% endcomment %}
+{% if messages %}
+    <div class="fixed z-50 bottom-0 right-0">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="bg-green-500 capitalize text-white font-bold rounded-t px-4 py-2">
+                    {{ message }}
+                </div>
+            {% elif message.tags == 'warning' %}
+                <div class="bg-yellow-500 capitalize text-white font-bold rounded-t px-4 py-2">
+                    {{ message }}
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="bg-blue-400 capitalize text-white font-bold rounded-t px-4 py-2">
+                    {{ message }}
+                </div>
+            {% elif message.tags == 'error' %}
+                <div class="bg-red-500 capitalize text-white font-bold rounded-t px-4 py-2">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
     <nav class="border-b flex py-6 px-4 items-center justify-between">
       <a class="text-4xl" href=".">Saga Trade</a>
       <div>
@@ -33,6 +66,9 @@
           </li>
           <li class="capitalize p-2 rounded-md px-4 bg-teal-400 text-lg mx-4 cursor-pointer hover:scale-105">
         <a href="{% url 'home:dashboard' %}"> dashboard</a>
+          </li>
+          <li class="capitalize p-2 rounded-md px-4 bg-gray-400 mx-4 cursor-pointer hover:scale-105">
+        <a href="{% url 'home:logout' %}">logout</a>
           </li>
           {% else %}
           <li
@@ -71,4 +107,9 @@
       </div>
     </footer>
   </body>
+  <script>
+    setTimeout(function() {
+        document.querySelector('.fixed').style.display = 'none';
+    }, 4000);
+</script>
 </html>
